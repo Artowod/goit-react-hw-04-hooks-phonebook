@@ -1,0 +1,6 @@
+.delete {
+  display: inline-block;
+  margin: 0 5px;
+  max-height: 20px;
+  font-size: 11px;
+}
