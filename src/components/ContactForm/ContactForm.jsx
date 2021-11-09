@@ -1,15 +1,15 @@
 import { v4 as uuidv4 } from 'uuid';
 import '../../App';
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import s from './ContactForm.module.css';
 
-class ContactForm extends Component {
-  labelNameId = uuidv4();
-  labelNumberId = uuidv4();
+const ContactForm = ({ newContactHandler }) => {
+  const labelNameId = uuidv4();
+  const labelNumberId = uuidv4();
 
-  inputNameProps = {
-    id: this.labelNameId,
+  const inputNameProps = {
+    id: labelNameId,
     type: 'text',
     name: 'name',
     pattern: "^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$",
@@ -17,8 +17,8 @@ class ContactForm extends Component {
       "Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п.",
   };
 
-  inputNumberProps = {
-    id: this.labelNumberId,
+  const inputNumberProps = {
+    id: labelNumberId,
     type: 'tel',
     name: 'number',
     pattern:
@@ -27,60 +27,68 @@ class ContactForm extends Component {
       'Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +',
   };
 
-  state = {
-    name: '',
-    number: '',
-  };
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-  handleInput = e => {
+  const handleInput = e => {
     const { value, name } = e.target;
-    this.setState({ [name]: value });
+
+    switch (name) {
+      case 'name':
+        setName(value);
+        break;
+      case 'number':
+        setNumber(value);
+        break;
+      default:
+        return;
+    }
   };
 
-  handleFormSubmit = e => {
+  const handleFormSubmit = e => {
     e.preventDefault();
-    this.props.newContactHandler({
+    newContactHandler({
       id: uuidv4(),
-      name: this.state.name,
-      number: this.state.number,
+      name: name,
+      number: number,
     });
-    this.reset();
+    reset();
   };
 
-  reset = () => {
-    this.setState({ name: '', number: '' });
+  const reset = () => {
+    setName('');
+    setNumber('');
   };
-  render() {
-    return (
-      <form className={s.contactForm} onSubmit={this.handleFormSubmit}>
-        <div className={s.nameBlock}>
-          <label htmlFor={this.labelNameId} className={s.labelName}>
-            Name
-          </label>
-          <input
-            value={this.state.name}
-            required
-            {...this.inputNameProps}
-            onChange={this.handleInput}
-          />
-        </div>
-        <div className={s.numberBlock}>
-          <label htmlFor={this.labelNumberId} className={s.labelNumber}>
-            Number
-          </label>
 
-          <input
-            value={this.state.number}
-            required
-            {...this.inputNumberProps}
-            onChange={this.handleInput}
-          />
-        </div>
-        <button type="submit">Add contact </button>
-      </form>
-    );
-  }
-}
+  return (
+    <form className={s.contactForm} onSubmit={handleFormSubmit}>
+      <div className={s.nameBlock}>
+        <label htmlFor={labelNameId} className={s.labelName}>
+          Name
+        </label>
+        <input
+          value={name}
+          required
+          {...inputNameProps}
+          onChange={handleInput}
+        />
+      </div>
+      <div className={s.numberBlock}>
+        <label htmlFor={labelNumberId} className={s.labelNumber}>
+          Number
+        </label>
+
+        <input
+          value={number}
+          required
+          {...inputNumberProps}
+          onChange={handleInput}
+        />
+      </div>
+      <button type="submit">Add contact </button>
+    </form>
+  );
+};
 
 ContactForm.propTypes = {
   newContactHandler: PropTypes.func.isRequired,
