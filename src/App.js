@@ -1,23 +1,10 @@
-// import { Component } from 'react';
 import { useState, useEffect } from 'react';
 import ContactForm from './components/ContactForm';
 import Filter from './components/Filter';
 import ContactList from './components/ContactList';
 import './App.css';
 
-//class App extends Component {
 const App = () => {
-  // state = {
-  //   contacts: [
-  //     { id: 'id-1', name: 'Chack Norris', number: '459-12-56' },
-  //     { id: 'id-2', name: 'Silvester Stallone', number: '443-89-12' },
-  //     { id: 'id-3', name: 'Jacky Chan', number: '645-17-79' },
-  //     { id: 'id-4', name: 'Arnold Schvartseneger', number: '227-91-26' },
-  //     { id: 'id-5', name: 'Bolo Yeng', number: '227-91-26' },
-  //   ],
-  //   filter: '',
-  // };
-
   const [contacts, setContacts] = useState([
     { id: 'id-1', name: 'Chack Norris', number: '459-12-56' },
     { id: 'id-2', name: 'Silvester Stallone', number: '443-89-12' },
@@ -50,11 +37,7 @@ const App = () => {
 
     matchedContactsList.length !== 0
       ? alert(`${name} is already in contacts.`)
-      : // : this.setState(prevState => {
-        //     const result = [...prevState.contacts, newContact];
-        //     return { contacts: result };
-        // });
-        setContacts(prevState => [...prevState, newContact]);
+      : setContacts(prevState => [...prevState, newContact]);
   };
 
   const deleteHandler = e => {
@@ -69,17 +52,6 @@ const App = () => {
     localStorage.setItem('phoneBook', JSON.stringify(contacts));
   }, [contacts]);
 
-  // componentDidMount() {
-  //   console.log('-=DidMount=-');
-  //   const localStorageData = localStorage.getItem('phoneBook');
-  //   if (localStorageData) {
-  //     this.setState({ contacts: JSON.parse(localStorageData) });
-  //   } else {
-  //     localStorage.setItem('phoneBook', JSON.stringify(this.state.contacts));
-  //   }
-  // }
-
-  //didmount replacement  - КАК ИЗБАВИТЬСЯ ОТ ВОРНИНГА ???
   useEffect(() => {
     const localStorageData = localStorage.getItem('phoneBook');
     if (localStorageData) {
@@ -87,6 +59,7 @@ const App = () => {
     } else {
       localStorage.setItem('phoneBook', JSON.stringify(contacts));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

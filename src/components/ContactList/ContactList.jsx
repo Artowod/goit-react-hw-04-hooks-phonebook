@@ -1,4 +1,5 @@
 import ListElement from './ListElement';
+
 const ContactList = ({ contactsList, deleteHandler }) => {
   return (
     <ul>
@@ -16,4 +17,5 @@ const ContactList = ({ contactsList, deleteHandler }) => {
     </ul>
   );
 };
+
 export default ContactList;
