@@ -35,9 +35,11 @@ const App = () => {
       return item.name.toLowerCase() === name.toLowerCase();
     });
 
-    matchedContactsList.length !== 0
-      ? alert(`${name} is already in contacts.`)
-      : setContacts(prevState => [...prevState, newContact]);
+    if (matchedContactsList.length !== 0) {
+      alert(`${name} is already in contacts.`);
+    } else {
+      setContacts(prevState => [...prevState, newContact]);
+    }
   };
 
   const deleteHandler = e => {
@@ -49,10 +51,6 @@ const App = () => {
   };
 
   useEffect(() => {
-    localStorage.setItem('phoneBook', JSON.stringify(contacts));
-  }, [contacts]);
-
-  useEffect(() => {
     const localStorageData = localStorage.getItem('phoneBook');
     if (localStorageData) {
       setContacts(JSON.parse(localStorageData));
@@ -61,6 +59,10 @@ const App = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('phoneBook', JSON.stringify(contacts));
+  }, [contacts]);
 
   return (
     <div className="App">
